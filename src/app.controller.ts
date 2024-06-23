@@ -8,7 +8,7 @@ export class AppController {
 
   @Get()
   @UseGuards(ClerkAuthGuard)
-  getHello(): string {
+  getHello(): Record<string, any> {
     return this.appService.getHello();
   }
 }

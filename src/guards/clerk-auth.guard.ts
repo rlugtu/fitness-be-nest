@@ -4,6 +4,7 @@ import {
   ExecutionContext,
   Injectable,
   Logger,
+  UnauthorizedException,
 } from '@nestjs/common';
 
 @Injectable()
@@ -14,18 +15,23 @@ export class ClerkAuthGuard implements CanActivate {
     const req = context.switchToHttp().getRequest();
     const token = req.cookies.__session;
 
-    try {
-      if (!token) {
-        return false;
-      }
+    // TESTING
+    const masterToken = req.headers?.authorization?.substring(7);
+    if (masterToken === process.env.MASTER_TOKEN) {
+      const master = await clerkClient.verifyToken(masterToken);
+      req['userId'] = master.sub;
 
-      await clerkClient.verifyToken(token);
+      return true;
+    }
+
+    try {
+      const foundToken = await clerkClient.verifyToken(token);
+      req['userId'] = foundToken.sub;
     } catch (e) {
       console.log(e);
       this.logger.error(e);
       return false;
     }
-    console.log('verified');
     return true;
   }
 }
