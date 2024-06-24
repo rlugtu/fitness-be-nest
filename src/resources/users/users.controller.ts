@@ -8,7 +8,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  async find(@Req() req: Request) {
+  async findOrCreate(@Req() req: Request) {
     const userId = req['userId'];
 
     return await this.usersService.findOrCreate(userId);
