@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   Req,
+  Query,
 } from '@nestjs/common';
 import { ProgramsService } from './programs.service';
 import { CreateProgramDto } from './dto/create-program.dto';
@@ -20,15 +21,22 @@ export class ProgramsController {
   constructor(private readonly programsService: ProgramsService) {}
 
   @Get()
-  async findAll(@Req() req: Request) {
+  async findAll(@Req() req: Request, @Query('workouts') workouts: string) {
     const userId = req['userId'];
-    return await this.programsService.findAll(userId);
+    const includeWorkouts = workouts === 'true';
+
+    return await this.programsService.findAll(userId, includeWorkouts);
   }
 
   @Get(':id')
-  async findOne(@Req() req: Request, @Param('id') id: string) {
+  async findOne(
+    @Req() req: Request,
+    @Param('id') id: string,
+    @Query('workouts') workouts: string,
+  ) {
     const userId = req['userId'];
-    return await this.programsService.findOne(id, userId);
+    const includeWorkouts = workouts === 'true';
+    return await this.programsService.findOne(id, userId, includeWorkouts);
   }
 
   @Post()

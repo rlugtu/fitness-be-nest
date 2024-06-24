@@ -7,19 +7,25 @@ import { PrismaService } from '../../prisma/prisma.service';
 export class ProgramsService {
   constructor(private prisma: PrismaService) {}
 
-  async findAll(userId: string) {
+  async findAll(userId: string, includeWorkouts: boolean = false) {
     return this.prisma.program.findMany({
       where: {
         userId,
       },
+      include: {
+        workouts: includeWorkouts,
+      },
     });
   }
 
-  async findOne(id: string, userId: string) {
+  async findOne(id: string, userId: string, includeWorkouts: boolean = false) {
     return this.prisma.program.findFirst({
       where: {
         id,
         userId,
+      },
+      include: {
+        workouts: includeWorkouts,
       },
     });
   }
