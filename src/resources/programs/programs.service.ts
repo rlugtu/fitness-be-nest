@@ -7,7 +7,6 @@ import { PrismaService } from '../../prisma/prisma.service';
 export class ProgramsService {
   constructor(private prisma: PrismaService) {}
   create(createProgramDto: CreateProgramDto, userId: string) {
-    console.log(userId);
     return this.prisma.program.create({
       data: { ...createProgramDto, userId },
     });
@@ -21,15 +20,31 @@ export class ProgramsService {
     });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} program`;
+  findOne(id: string, userId: string) {
+    return this.prisma.program.findFirst({
+      where: {
+        id,
+        userId,
+      },
+    });
   }
 
-  update(id: number, updateProgramDto: UpdateProgramDto) {
-    return `This action updates a #${id} program`;
+  update(id: string, updateProgramDto: UpdateProgramDto, userId: string) {
+    return this.prisma.program.update({
+      where: {
+        id,
+        userId,
+      },
+      data: updateProgramDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} program`;
+  remove(id: string, userId: string) {
+    return this.prisma.program.delete({
+      where: {
+        id,
+        userId,
+      },
+    });
   }
 }

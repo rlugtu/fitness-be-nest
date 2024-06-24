@@ -32,17 +32,24 @@ export class ProgramsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.programsService.findOne(+id);
+  findOne(@Req() req: Request, @Param('id') id: string) {
+    const userId = req['userId'];
+    return this.programsService.findOne(id, userId);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProgramDto: UpdateProgramDto) {
-    return this.programsService.update(+id, updateProgramDto);
+  update(
+    @Req() req: Request,
+    @Param('id') id: string,
+    @Body() updateProgramDto: UpdateProgramDto,
+  ) {
+    const userId = req['userId'];
+    return this.programsService.update(id, updateProgramDto, userId);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.programsService.remove(+id);
+  remove(@Req() req: Request, @Param('id') id: string) {
+    const userId = req['userId'];
+    return this.programsService.remove(id, userId);
   }
 }
