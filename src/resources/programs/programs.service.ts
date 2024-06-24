@@ -6,11 +6,6 @@ import { PrismaService } from '../../prisma/prisma.service';
 @Injectable()
 export class ProgramsService {
   constructor(private prisma: PrismaService) {}
-  create(createProgramDto: CreateProgramDto, userId: string) {
-    return this.prisma.program.create({
-      data: { ...createProgramDto, userId },
-    });
-  }
 
   async findAll(userId: string) {
     return this.prisma.program.findMany({
@@ -20,7 +15,7 @@ export class ProgramsService {
     });
   }
 
-  findOne(id: string, userId: string) {
+  async findOne(id: string, userId: string) {
     return this.prisma.program.findFirst({
       where: {
         id,
@@ -29,7 +24,13 @@ export class ProgramsService {
     });
   }
 
-  update(id: string, updateProgramDto: UpdateProgramDto, userId: string) {
+  async create(createProgramDto: CreateProgramDto, userId: string) {
+    return this.prisma.program.create({
+      data: { ...createProgramDto, userId },
+    });
+  }
+
+  async update(id: string, updateProgramDto: UpdateProgramDto, userId: string) {
     return this.prisma.program.update({
       where: {
         id,
@@ -39,7 +40,7 @@ export class ProgramsService {
     });
   }
 
-  remove(id: string, userId: string) {
+  async remove(id: string, userId: string) {
     return this.prisma.program.delete({
       where: {
         id,

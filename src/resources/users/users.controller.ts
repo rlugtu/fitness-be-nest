@@ -8,16 +8,16 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  find(@Req() req: Request) {
+  async find(@Req() req: Request) {
     const userId = req['userId'];
 
-    return this.usersService.findOrCreate(userId);
+    return await this.usersService.findOrCreate(userId);
   }
 
   @Delete()
-  remove(@Req() req: Request) {
+  async remove(@Req() req: Request) {
     const userId = req['userId'];
 
-    return this.usersService.remove(userId);
+    return await this.usersService.remove(userId);
   }
 }

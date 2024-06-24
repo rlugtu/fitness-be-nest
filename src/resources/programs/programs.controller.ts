@@ -19,37 +19,40 @@ import { ClerkAuthGuard } from 'src/guards/clerk-auth.guard';
 export class ProgramsController {
   constructor(private readonly programsService: ProgramsService) {}
 
-  @Post()
-  create(@Req() req: Request, @Body() createProgramDto: CreateProgramDto) {
-    const userId = req['userId'];
-    return this.programsService.create(createProgramDto, userId);
-  }
-
   @Get()
-  findAll(@Req() req: Request) {
+  async findAll(@Req() req: Request) {
     const userId = req['userId'];
-    return this.programsService.findAll(userId);
+    return await this.programsService.findAll(userId);
   }
 
   @Get(':id')
-  findOne(@Req() req: Request, @Param('id') id: string) {
+  async findOne(@Req() req: Request, @Param('id') id: string) {
     const userId = req['userId'];
-    return this.programsService.findOne(id, userId);
+    return await this.programsService.findOne(id, userId);
+  }
+
+  @Post()
+  async create(
+    @Req() req: Request,
+    @Body() createProgramDto: CreateProgramDto,
+  ) {
+    const userId = req['userId'];
+    return await this.programsService.create(createProgramDto, userId);
   }
 
   @Patch(':id')
-  update(
+  async update(
     @Req() req: Request,
     @Param('id') id: string,
     @Body() updateProgramDto: UpdateProgramDto,
   ) {
     const userId = req['userId'];
-    return this.programsService.update(id, updateProgramDto, userId);
+    return await this.programsService.update(id, updateProgramDto, userId);
   }
 
   @Delete(':id')
-  remove(@Req() req: Request, @Param('id') id: string) {
+  async remove(@Req() req: Request, @Param('id') id: string) {
     const userId = req['userId'];
-    return this.programsService.remove(id, userId);
+    return await this.programsService.remove(id, userId);
   }
 }
